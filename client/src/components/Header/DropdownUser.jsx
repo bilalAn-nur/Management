@@ -9,23 +9,19 @@ const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Hook for navigation
 
-  const { user, email } = useUser();
+  const { user } = useUser();
 
   const handleSignOut = async () => {
     try {
-      console.log("Sign out clicked!");
-      console.log("Sending sign out request...");
-
       const response = await axios.post(
         import.meta.env.VITE_API_BACKEND_MONGODB + "/signout",
         {},
         { withCredentials: true }
       );
-      localStorage.removeItem("name");
-      localStorage.removeItem("email");
 
       console.log("Response received:", response);
-      navigate("/");
+      window.location.href = "/";
+      // navigate("/");
     } catch (err) {
       console.error("Sign out failed:", err);
     }
@@ -40,10 +36,10 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black ">
-            {user ? <h1>Welcome, {user}!</h1> : <h1>Welcome!</h1>}
+            {user ? <h1>Welcome, {user.name}!</h1> : <h1>Welcome!</h1>}
           </span>
           <span className="block text-xs">
-            {user ? <h1>{email}!</h1> : <h1></h1>}
+            {user ? <h1>{user.email}!</h1> : <h1></h1>}
           </span>
         </span>
 

@@ -43,7 +43,7 @@ const AdminLayout = ({ children }) => {
       </div>
     );
   }
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
 
   if (isAuthenticated) {
     return (

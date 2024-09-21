@@ -1,26 +1,30 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [email, setEmail] = useState(null);
-
-  console.log("data user: " + user);
 
   useEffect(() => {
-    const storedUserName = localStorage.getItem("name");
-    const storedUserEmail = localStorage.getItem("email");
-    if (storedUserName) {
-      setUser(storedUserName);
-      setEmail(storedUserEmail);
-    }
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BACKEND_MONGODB}/fetchDataUser`,
+          { withCredentials: true } // Pastikan mengirim cookies
+        );
+        setUser(response.data.user); // Simpan data user di state
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, email, setEmail }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
   );
 };
 

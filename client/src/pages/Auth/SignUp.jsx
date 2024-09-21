@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LogoDark from "../../images/logo/logo-dark.svg";
 import axios from "axios";
 
@@ -10,6 +10,8 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const navigate = useNavigate();
 
   const [msg, setMsg] = useState("");
   // const history = useHistory();
@@ -35,6 +37,8 @@ const SignUp = () => {
       );
 
       console.log("Data berhasil disimpan", response.data);
+      window.location.href = "/";
+      // navigate("/");
     } catch (error) {
       console.log("Error occurred", error);
       if (error.response) {

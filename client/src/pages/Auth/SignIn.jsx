@@ -37,15 +37,9 @@ const SignIn = () => {
         }
       );
 
-      const name = response.data.data.name;
-      const email = response.data.data.email;
-      setUser(name);
-      localStorage.setItem("name", name);
-      localStorage.setItem("email", email);
-
       console.log("Login berhasil", response.data);
-      // window.location.href = "/dashboard";
-      navigate("/dashboard");
+      window.location.href = "/dashboard";
+      // navigate("/dashboard");
     } catch (error) {
       console.log("Error occurred", error);
       if (error.response) {
@@ -323,7 +317,7 @@ const SignIn = () => {
               <div className="mt-6 text-center">
                 <p>
                   Don’t have any account?{" "}
-                  <Link to="/auth/signup" className="text-primary">
+                  <Link to="/sign-up" className="text-primary">
                     Sign Up
                   </Link>
                 </p>

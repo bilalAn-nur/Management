@@ -45,6 +45,7 @@ exports.signUp = async (req, res) => {
       name,
       email,
       password: hashPassword,
+      role: "user",
       token: "",
     });
 
@@ -87,7 +88,7 @@ exports.signIn = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user._id, name: user.name, email: user.email },
+      { userId: user._id, name: user.name, email: user.email, role: user.role },
       process.env.JWT_SECRET || "supersecretkey",
       { expiresIn: "1h" }
     );
@@ -114,7 +115,6 @@ exports.signIn = async (req, res) => {
 exports.signOut = async (req, res) => {
   try {
     const token = req.cookies.token;
-    console.log("Token yang diterima: " + token);
 
     // Jika token tidak ditemukan di cookies
     if (!token) {
@@ -146,6 +146,39 @@ exports.signOut = async (req, res) => {
   }
 };
 
-// exports.fetchData = async (req, res) => {
-//   const { }
-// }
+exports.fetchDataUser = async (req, res) => {
+  try {
+    const token = req.cookies.token; // Ambil token dari cookies
+    if (!token) {
+      return res.status(401).json({ message: "Token Not Found" });
+    }
+
+    // Decode token untuk mendapatkan data user
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "supersecretkey"
+    );
+    if (!decoded) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    // Cari user berdasarkan userId dari token
+    const user = await User.findById(decoded.userId).select("-password"); // Jangan kirim password
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Kirim data user
+    return res.status(200).json({
+      message: "User data fetched successfully",
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    return res.status(500).json({ message: "Error fetching user data" });
+  }
+};
