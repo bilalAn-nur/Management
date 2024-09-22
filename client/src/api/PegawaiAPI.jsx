@@ -4,7 +4,8 @@ import axios from "axios";
 export const getAllPegawai = async () => {
   try {
     const response = await axios.get(
-      import.meta.env.VITE_API_BACKEND_MONGODB + "/getAllPegawai"
+      import.meta.env.VITE_API_BACKEND_MONGODB + "/getAllPegawai",
+      { withCredentials: true }
     );
     return response.data;
   } catch (error) {
@@ -15,10 +16,15 @@ export const getAllPegawai = async () => {
 // Fungsi untuk menambah pegawai baru
 export const tambahPegawai = async (pegawaiData) => {
   try {
+    console.log(pegawaiData);
     const response = await axios.post(
-      import.meta.env.VITE_API_BACKEND_MONGODB + "/tambahPegawai",
-      pegawaiData
+      import.meta.env.VITE_API_BACKEND_MONGODB + "/addPegawai",
+      { name: pegawaiData },
+      { withCredentials: true }
     );
+
+    alert("Pegawai Berhasil ditambah");
+    window.location.reload();
     return response.data;
   } catch (error) {
     throw error;
@@ -26,12 +32,15 @@ export const tambahPegawai = async (pegawaiData) => {
 };
 
 // Fungsi untuk mengupdate pegawai
-export const updatePegawai = async (id, pegawaiData) => {
+export const updatePegawai = async (id, name) => {
   try {
     const response = await axios.post(
       import.meta.env.VITE_API_BACKEND_MONGODB + "/editPegawai",
-      pegawaiData
+      { id: id, name: name },
+      { withCredentials: true }
     );
+    alert("Pegawai Berhasil dirubah");
+    window.location.reload();
     return response.data;
   } catch (error) {
     throw error;
@@ -42,9 +51,24 @@ export const updatePegawai = async (id, pegawaiData) => {
 export const hapusPegawai = async (id) => {
   try {
     const response = await axios.post(
-      import.meta.env.VITE_API_BACKEND_MONGODB + "/hapusPegawai"
+      import.meta.env.VITE_API_BACKEND_MONGODB + "/deletePegawai",
+      { id: id },
+      { withCredentials: true }
     );
+    alert("Pegawai Berhasil dihapus");
+    window.location.reload();
     return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getJumlahPegawai = async () => {
+  try {
+    const pegawaiList = await getAllPegawai();
+    const pegawaiCount = pegawaiList.length;
+    console.log(pegawaiCount);
+    return pegawaiCount;
   } catch (error) {
     throw error;
   }

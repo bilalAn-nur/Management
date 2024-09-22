@@ -1,30 +1,36 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import ModalInputPegawai from "../../components/Modals/ModalInputPegawai";
-import { getAllPegawai, tambahPegawai } from "../../api/PegawaiAPI";
+import ModalEditPegawai from "../../components/Modals/ModalEditPegawai"; // Import the new edit modal
+import {
+  getAllPegawai,
+  getJumlahPegawai,
+  hapusPegawai,
+} from "../../api/PegawaiAPI"; // Include editPegawai API
 
 const Pegawai = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pegawai, setPegawai] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedPegawai, setSelectedPegawai] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [pegawaiCount, setCountPegawai] = useState(0);
 
-  const [formData, setFormData] = useState({
-    nama: "",
-  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const openEditModal = (pegawai) => {
+    setSelectedPegawai(pegawai);
+    setIsEditModalOpen(true);
+  };
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedPegawai(null);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleSubmit = (inputValue) => {
-    setData(inputValue); // Simpan data dari modal
-    closeModal(); // Tutup modal setelah submit
-  };
-
-  // CRUD PEGAWAI
   const fetchPegawai = async () => {
     try {
       const data = await getAllPegawai();
@@ -34,21 +40,66 @@ const Pegawai = () => {
     }
   };
 
-  const addPegawai = async () => {
-    try {
-      await tambahPegawai({ nama });
-      fetchPegawai();
-      setNama("");
-      setUsia("");
-      setJabatan("");
-    } catch (error) {
-      console.error("Error adding pegawai:", error);
+  const handleSubmit = (inputValue) => {
+    setPegawai([...pegawai, inputValue]);
+    closeModal();
+  };
+
+  const handleEditSubmit = async (updatedData) => {
+    setPegawai([...pegawai, updatedData]);
+    closeModal();
+  };
+
+  const handleDeletePegawai = async (id) => {
+    const confirmDelete = window.confirm(
+      "Apakah Anda yakin ingin menghapus pegawai?"
+    );
+    if (confirmDelete) {
+      try {
+        await hapusPegawai(id);
+        fetchPegawai();
+      } catch (error) {
+        console.error("Error deleting pegawai:", error);
+      }
     }
   };
 
   useEffect(() => {
+    const fetchJumlahPegawai = async () => {
+      try {
+        const pegawaiList = await getAllPegawai();
+        let pegawaiArray = [];
+        pegawaiArray = pegawaiList.data;
+        setCountPegawai(pegawaiArray.length);
+      } catch (error) {
+        console.error("Error fetching jumlah pegawai:", error);
+      }
+    };
+
     fetchPegawai();
+    fetchJumlahPegawai();
   }, []);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const filteredPegawai = pegawai.filter((p) =>
+    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const currentPegawai = filteredPegawai.slice(startIndex, endIndex);
+
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(pegawai.length / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <>
@@ -58,8 +109,15 @@ const Pegawai = () => {
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default sm:px-7.5 xl:pb-1">
           <div className="flex justify-between items-center mb-6">
             <h4 className="mb-6 text-xl font-semibold text-black ">
-              Tabel Pegawai
+              Total Pegawai : {pegawaiCount}
             </h4>
+            <input
+              type="text"
+              placeholder="Cari pegawai..."
+              className="mb-4 p-2 border border-gray-300 rounded-md"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
             <button
               onClick={openModal}
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
@@ -72,6 +130,13 @@ const Pegawai = () => {
             isOpen={isModalOpen}
             onClose={closeModal}
             onSubmit={handleSubmit}
+          />
+
+          <ModalEditPegawai
+            isOpen={isEditModalOpen}
+            onClose={closeEditModal}
+            onSubmit={handleEditSubmit}
+            initialData={selectedPegawai}
           />
 
           <table className="w-full table-auto">
@@ -87,10 +152,12 @@ const Pegawai = () => {
               </tr>
             </thead>
             <tbody>
-              {pegawai.map((pegawai, key) => (
+              {currentPegawai.map((pegawai, key) => (
                 <tr key={key}>
                   <td className="border-b border-[#eee] py-5 px-4 pl-9  xl:pl-11">
-                    <h5 className="font-medium text-black">{key + 1}</h5>
+                    <h5 className="font-medium text-black">
+                      {startIndex + key + 1}
+                    </h5>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 ">
                     <p className="text-black">{pegawai.name}</p>
@@ -98,26 +165,10 @@ const Pegawai = () => {
 
                   <td className="border-b border-[#eee] py-5 px-4 ">
                     <div className="flex items-center space-x-3.5">
-                      <button className="hover:text-primary">
-                        <svg
-                          className="fill-current"
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                            fill=""
-                          />
-                          <path
-                            d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                            fill=""
-                          />
-                        </svg>
-                      </button>
-                      <button className="hover:text-primary">
+                      <button
+                        className="hover:text-primary"
+                        onClick={() => openEditModal(pegawai)}
+                      >
                         <svg
                           className="fill-current"
                           width="18"
@@ -129,7 +180,10 @@ const Pegawai = () => {
                           <path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152L0 424c0 48.6 39.4 88 88 88l272 0c48.6 0 88-39.4 88-88l0-112c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 112c0 22.1-17.9 40-40 40L88 464c-22.1 0-40-17.9-40-40l0-272c0-22.1 17.9-40 40-40l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L88 64z" />
                         </svg>
                       </button>
-                      <button className="hover:text-primary">
+                      <button
+                        className="hover:text-primary"
+                        onClick={() => handleDeletePegawai(pegawai._id)}
+                      >
                         <svg
                           className="fill-current"
                           width="18"
@@ -162,6 +216,27 @@ const Pegawai = () => {
               ))}
             </tbody>
           </table>
+          <div className="flex justify-between mt-4">
+            <button
+              className="px-4 py-2 bg-gray-300 rounded-md"
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span>
+              Page {currentPage} of {Math.ceil(pegawai.length / itemsPerPage)}
+            </span>
+            <button
+              className="px-4 py-2 bg-gray-300 rounded-md"
+              onClick={handleNextPage}
+              disabled={
+                currentPage === Math.ceil(pegawai.length / itemsPerPage)
+              }
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </>

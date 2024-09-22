@@ -4,6 +4,10 @@ const {
   signIn,
   signOut,
   fetchDataUser,
+  getUser,
+  changeRole,
+  changeApprove,
+  deleteUser,
 } = require("../controllers/UserController");
 const router = express.Router();
 const { loginLimiter } = require("../middleware/rateLimiter");
@@ -14,6 +18,7 @@ const {
   EditPegawai,
   DeletePegawai,
 } = require("../controllers/PegawaiController");
+const { addProman } = require("../controllers/PromanController");
 
 // User Route
 router.post("/signup", signUp);
@@ -27,6 +32,20 @@ router.get("/protected", authMiddleware, (req, res) => {
   res.status(200).json({ message: "Protected route accessed successfully!" });
 });
 
+// ApproveRoute
+router.get("/getUser", authMiddleware, getUser, (req, res) => {
+  res.status(200).json({ message: "Protected route accessed successfully!" });
+});
+router.post("/changeRoleUser", authMiddleware, changeRole, (req, res) => {
+  res.status(200).json({ message: "Protected route accessed successfully!" });
+});
+router.post("/changeApproveUser", authMiddleware, changeApprove, (req, res) => {
+  res.status(200).json({ message: "Protected route accessed successfully!" });
+});
+router.post("/deleteUser", authMiddleware, deleteUser, (req, res) => {
+  res.status(200).json({ message: "Protected route accessed successfully!" });
+});
+
 // Pegawai Route
 router.get("/getAllPegawai", authMiddleware, ReadPegawai, (req, res) => {
   res.status(200).json({ message: "izin diberikan!" });
@@ -34,12 +53,15 @@ router.get("/getAllPegawai", authMiddleware, ReadPegawai, (req, res) => {
 router.post("/addPegawai", authMiddleware, AddPegawai, (req, res) => {
   res.status(200).json({ message: "izin diberikan!" });
 });
-
 router.post("/editPegawai", authMiddleware, EditPegawai, (req, res) => {
   res.status(200).json({ message: "izin diberikan!" });
 });
-
 router.post("/deletePegawai", authMiddleware, DeletePegawai, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+
+// Proman Route
+router.post("/addProman", addProman, (req, res) => {
   res.status(200).json({ message: "izin diberikan!" });
 });
 

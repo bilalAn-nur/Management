@@ -46,6 +46,7 @@ exports.signUp = async (req, res) => {
       email,
       password: hashPassword,
       role: "user",
+      approve: false,
       token: "",
     });
 
@@ -77,6 +78,12 @@ exports.signIn = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         message: "Email tidak ditemukan, silahkan daftar terlebih dahulu",
+      });
+    }
+
+    if (user.approve === false) {
+      return res.status(401).json({
+        message: "Akun anda belum disetujui, silahkan hubungi administrator",
       });
     }
 
@@ -180,5 +187,107 @@ exports.fetchDataUser = async (req, res) => {
   } catch (error) {
     console.error("Error fetching user data:", error);
     return res.status(500).json({ message: "Error fetching user data" });
+  }
+};
+
+// Approve User
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.find({ email: { $ne: "admin@gmail.com" } });
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Gagal mengambil data pegawai",
+      error: error.message,
+    });
+  }
+};
+exports.changeRole = async (req, res) => {
+  try {
+    const userId = req.body.id;
+    const { role } = req.body;
+
+    if (!role) {
+      return res
+        .status(400)
+        .json({ message: "Silahkan isi nama terlebih dahulu!" });
+    }
+
+    const editRoleUser = await User.findByIdAndUpdate(
+      userId,
+      { role },
+      { new: true }
+    );
+
+    if (!editRoleUser) {
+      return res.status(404).json({ message: "User tidak ditemukan!" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Pegawai berhasil diupdate!",
+      data: editRoleUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Gagal mengupdate pegawai",
+      error: error.message,
+    });
+  }
+};
+exports.changeApprove = async (req, res) => {
+  try {
+    const userId = req.body.id;
+    const { approve } = req.body;
+
+    const editApproveUser = await User.findByIdAndUpdate(
+      userId,
+      { approve },
+      { new: true }
+    );
+
+    if (!editApproveUser) {
+      return res.status(404).json({ message: "User tidak ditemukan!" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User approve berhasil diupdate!",
+      data: editApproveUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Gagal mengupdate user",
+      error: error.message,
+    });
+  }
+};
+exports.deleteUser = async (req, res) => {
+  try {
+    const userId = req.body.id;
+
+    const user = await User.findByIdAndDelete(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User tidak ditemukan!" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User berhasil dihapus!",
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Gagal menghapus user",
+      error: error.message,
+    });
   }
 };

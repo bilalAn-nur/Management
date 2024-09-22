@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { tambahPegawai } from "../../api/PegawaiAPI";
+import React, { useState, useEffect } from "react";
+import { updatePegawai } from "../../api/PegawaiAPI";
 
-const ModalInput = ({ isOpen, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({ name: "" });
+const ModalEditPegawai = ({ isOpen, onClose, onSubmit, initialData }) => {
+  const [formData, setFormData] = useState({
+    id: "",
+    name: "",
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({ id: initialData._id, name: initialData.name });
+    }
+  }, [initialData]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      await tambahPegawai(formData.name);
-      onSubmit(formData);
+      await updatePegawai(formData.id, formData.name);
       closeModal(); // Tutup modal setelah submit
     } catch (error) {
       console.error("Error adding pegawai:", error);
     }
+    onClose();
   };
-
-  // Untuk menutup modal dengan menekan tombol Escape
-  useEffect(() => {
-    const handleEsc = (event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleEsc);
-    return () => {
-      window.removeEventListener("keydown", handleEsc);
-    };
-  }, [onClose]);
 
   if (!isOpen) return null;
 
@@ -38,13 +38,12 @@ const ModalInput = ({ isOpen, onClose, onSubmit }) => {
       <div className="relative w-full max-w-lg bg-white rounded-lg shadow-lg">
         {/* Modal Header */}
         <div className="flex justify-between items-center p-4 border-b">
-          <h5 className="text-lg font-semibold text-black">Tambah Data</h5>
+          <h5 className="text-lg font-semibold text-black">Edit Data</h5>
           <button onClick={onClose} className="text-black hover:text-gray-700">
             &times;
           </button>
         </div>
 
-        {/* Modal Body */}
         <div className="p-6">
           <form onSubmit={handleSubmit}>
             <div className="mb-4.5">
@@ -64,7 +63,6 @@ const ModalInput = ({ isOpen, onClose, onSubmit }) => {
           </form>
         </div>
 
-        {/* Modal Footer */}
         <div className="flex justify-end p-4 border-t">
           <button
             onClick={onClose}
@@ -84,4 +82,4 @@ const ModalInput = ({ isOpen, onClose, onSubmit }) => {
   );
 };
 
-export default ModalInput;
+export default ModalEditPegawai;
