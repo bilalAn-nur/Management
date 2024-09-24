@@ -8,6 +8,10 @@ import AdminLayout from "./Layout/AdminLayout";
 import Proman from "./pages/Dashboard/Proman";
 import Pegawai from "./pages/Dashboard/Pegawai";
 import AproveUser from "./pages/Dashboard/AproveUser";
+import CalendarProman from "./pages/Dashboard/CalendarProman";
+import CariProman from "./pages/Dashboard/CariProman";
+import ExportProman from "./pages/Dashboard/ExportProman";
+import JadwalPegawai from "./pages/Dashboard/JadwalPegawai";
 
 function App() {
   return (
@@ -22,11 +26,39 @@ function App() {
         }
       />
       <Route
+        path="/cariProman"
+        element={
+          <AdminLayout>
+            <PageTittle title="Cari Proman | TailAdmin" />
+            <CariProman />
+          </AdminLayout>
+        }
+      />
+      <Route
         path="/proman"
         element={
           <AdminLayout>
             <PageTittle title="Proman | TailAdmin" />
             <Proman />
+          </AdminLayout>
+        }
+      />
+      <Route
+        path="/calendar"
+        element={
+          <AdminLayout>
+            <PageTittle title="Calendar | TailAdmin" />
+            <CalendarProman />
+          </AdminLayout>
+        }
+      />
+
+      <Route
+        path="/promanExport"
+        element={
+          <AdminLayout>
+            <PageTittle tittle="Export Proman | TailAdmin" />
+            <ExportProman />
           </AdminLayout>
         }
       />
@@ -47,6 +79,16 @@ function App() {
           <AdminLayout>
             <PageTittle title="Approve User | TailAdmin" />
             <AproveUser />
+          </AdminLayout>
+        }
+      />
+
+      <Route
+        path="/jadwalPegawai"
+        element={
+          <AdminLayout>
+            <PageTittle title="Jadwal Proman | TailAdmin" />
+            <JadwalPegawai />
           </AdminLayout>
         }
       />

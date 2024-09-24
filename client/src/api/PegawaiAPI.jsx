@@ -14,12 +14,18 @@ export const getAllPegawai = async () => {
 };
 
 // Fungsi untuk menambah pegawai baru
-export const tambahPegawai = async (pegawaiData) => {
+export const tambahPegawai = async (dataToSubmit) => {
   try {
-    console.log(pegawaiData);
     const response = await axios.post(
       import.meta.env.VITE_API_BACKEND_MONGODB + "/addPegawai",
-      { name: pegawaiData },
+      {
+        nik: dataToSubmit.nik,
+        name: dataToSubmit.name,
+        sektor: dataToSubmit.sektor,
+        teknisi: dataToSubmit.teknisi,
+        nohp: dataToSubmit.nohp,
+        mitra: dataToSubmit.mitra,
+      },
       { withCredentials: true }
     );
 
@@ -32,11 +38,28 @@ export const tambahPegawai = async (pegawaiData) => {
 };
 
 // Fungsi untuk mengupdate pegawai
-export const updatePegawai = async (id, name) => {
+export const updatePegawai = async (id, dataToSubmit) => {
   try {
+    console.log(
+      id,
+      dataToSubmit.nik,
+      dataToSubmit.name,
+      dataToSubmit.sektor,
+      dataToSubmit.teknisi,
+      dataToSubmit.nohp,
+      dataToSubmit.mitra
+    );
     const response = await axios.post(
       import.meta.env.VITE_API_BACKEND_MONGODB + "/editPegawai",
-      { id: id, name: name },
+      {
+        id: id,
+        nik: dataToSubmit.nik,
+        name: dataToSubmit.name,
+        sektor: dataToSubmit.sektor,
+        teknisi: dataToSubmit.teknisi,
+        nohp: dataToSubmit.nohp,
+        mitra: dataToSubmit.mitra,
+      },
       { withCredentials: true }
     );
     alert("Pegawai Berhasil dirubah");

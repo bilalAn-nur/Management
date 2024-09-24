@@ -143,10 +143,16 @@ const Pegawai = () => {
             <thead>
               <tr className="bg-gray-2 text-left ">
                 <th className="min-w-[220px] py-4 px-4 font-medium text-black xl:pl-11">
-                  No
+                  NIK
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-medium text-black">
                   Nama Pegawai
+                </th>
+                <th className="min-w-[150px] py-4 px-4 font-medium text-black">
+                  Sektor
+                </th>
+                <th className="min-w-[150px] py-4 px-4 font-medium text-black">
+                  Nomor HP
                 </th>
                 <th className="py-4 px-4 font-medium text-black">Actions</th>
               </tr>
@@ -155,12 +161,16 @@ const Pegawai = () => {
               {currentPegawai.map((pegawai, key) => (
                 <tr key={key}>
                   <td className="border-b border-[#eee] py-5 px-4 pl-9  xl:pl-11">
-                    <h5 className="font-medium text-black">
-                      {startIndex + key + 1}
-                    </h5>
+                    <h5 className="font-medium text-black">{pegawai.nik}</h5>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 ">
                     <p className="text-black">{pegawai.name}</p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 ">
+                    <p className="text-black">{pegawai.sektor}</p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 ">
+                    <p className="text-black">{pegawai.nohp}</p>
                   </td>
 
                   <td className="border-b border-[#eee] py-5 px-4 ">

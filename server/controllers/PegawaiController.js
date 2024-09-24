@@ -15,18 +15,22 @@ exports.ReadPegawai = async (req, res) => {
     });
   }
 };
-
 exports.AddPegawai = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { nik, name, sektor, teknisi, nohp, mitra } = req.body;
 
-    if (!name) {
-      return res
-        .status(400)
-        .json({ message: "Silahkan isi nama terlebih dahulu!" });
+    if (!name || !nik || !sektor || !teknisi || !nohp || !mitra) {
+      return res.status(400).json({ message: "Silahkan isi terlebih dahulu!" });
     }
 
-    const addPegawai = new Pegawai({ name: name });
+    const addPegawai = new Pegawai({
+      nik: nik,
+      name: name,
+      sektor: sektor,
+      teknisi: teknisi,
+      nohp: nohp,
+      mitra: mitra,
+    });
     await addPegawai.save();
 
     return res
@@ -36,22 +40,25 @@ exports.AddPegawai = async (req, res) => {
     console.error("Terjadi keasalahan saat penambahan data : " + error);
   }
 };
-
 exports.EditPegawai = async (req, res) => {
   try {
     const pegawaiId = req.body.id;
-    const { name } = req.body;
-
-    if (!name) {
-      return res
-        .status(400)
-        .json({ message: "Silahkan isi nama terlebih dahulu!" });
+    const { nik, name, sektor, teknisi, nohp, mitra } = req.body;
+    if (!name || !nik || !sektor || !teknisi || !nohp || !mitra) {
+      return res.status(400).json({ message: "Silahkan isi terlebih dahulu!" });
     }
 
     const editPegawai = await Pegawai.findByIdAndUpdate(
       pegawaiId,
-      { name },
-      { new: true } // Mengembalikan data yang baru setelah diupdate
+      {
+        nik: nik,
+        name: name,
+        sektor: sektor,
+        teknisi: teknisi,
+        nohp: nohp,
+        mitra: mitra,
+      },
+      { new: true }
     );
 
     if (!editPegawai) {
@@ -71,7 +78,6 @@ exports.EditPegawai = async (req, res) => {
     });
   }
 };
-
 exports.DeletePegawai = async (req, res) => {
   try {
     const pegawaiId = req.body.id;

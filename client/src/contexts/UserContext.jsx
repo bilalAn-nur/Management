@@ -13,9 +13,9 @@ export const UserProvider = ({ children }) => {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_API_BACKEND_MONGODB}/fetchDataUser`,
-          { withCredentials: true } // Pastikan mengirim cookies
+          { withCredentials: true }
         );
-        setUser(response.data.user); // Simpan data user di state
+        setUser(response.data.user);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

@@ -18,7 +18,13 @@ const {
   EditPegawai,
   DeletePegawai,
 } = require("../controllers/PegawaiController");
-const { addProman } = require("../controllers/PromanController");
+const {
+  addProman,
+  getPromanByDate,
+  getAllProman,
+  editProman,
+  deleteProman,
+} = require("../controllers/PromanController");
 
 // User Route
 router.post("/signup", signUp);
@@ -61,7 +67,19 @@ router.post("/deletePegawai", authMiddleware, DeletePegawai, (req, res) => {
 });
 
 // Proman Route
-router.post("/addProman", addProman, (req, res) => {
+router.post("/addProman", authMiddleware, addProman, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+router.get("/getPromanByDate", getPromanByDate, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+router.get("/getAllProman", getAllProman, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+router.post("/editProman", authMiddleware, editProman, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+router.post("/deleteProman", authMiddleware, deleteProman, (req, res) => {
   res.status(200).json({ message: "izin diberikan!" });
 });
 

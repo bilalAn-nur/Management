@@ -2,17 +2,28 @@ import React, { useEffect, useState } from "react";
 import { tambahPegawai } from "../../api/PegawaiAPI";
 
 const ModalInput = ({ isOpen, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({ name: "" });
+  const [formData, setFormData] = useState({
+    nik: "",
+    name: "",
+    sektor: "",
+    teknisi: "",
+    nohp: "",
+    mitra: "",
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      await tambahPegawai(formData.name);
-      onSubmit(formData);
-      closeModal(); // Tutup modal setelah submit
+      const dataToSubmit = {
+        ...formData,
+      };
+      await tambahPegawai(dataToSubmit);
+      onSubmit(dataToSubmit);
+      closeModal();
     } catch (error) {
       console.error("Error adding pegawai:", error);
     }
@@ -45,8 +56,22 @@ const ModalInput = ({ isOpen, onClose, onSubmit }) => {
         </div>
 
         {/* Modal Body */}
-        <div className="p-6">
+        <div className="p-6 overflow-y-auto max-h-[60vh]">
           <form onSubmit={handleSubmit}>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black">
+                NIK <span className="text-meta-1">*</span>
+              </label>
+              <input
+                type="text"
+                name="nik"
+                value={formData.nik}
+                onChange={handleChange}
+                placeholder="Masukan nik pegawai"
+                required
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:focus:border-primary"
+              />
+            </div>
             <div className="mb-4.5">
               <label className="mb-2.5 block text-black">
                 Nama Pegawai <span className="text-meta-1">*</span>
@@ -57,6 +82,62 @@ const ModalInput = ({ isOpen, onClose, onSubmit }) => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Masukan nama pegawai"
+                required
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:focus:border-primary"
+              />
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black">
+                Sektor <span className="text-meta-1">*</span>
+              </label>
+              <input
+                type="text"
+                name="sektor"
+                value={formData.sektor}
+                onChange={handleChange}
+                placeholder="Masukan nama sektor"
+                required
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:focus:border-primary"
+              />
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black">
+                Teknisi <span className="text-meta-1">*</span>
+              </label>
+              <input
+                type="text"
+                name="teknisi"
+                value={formData.teknisi}
+                onChange={handleChange}
+                placeholder="Masukan teknisi"
+                required
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:focus:border-primary"
+              />
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black">
+                Nomor HP <span className="text-meta-1">*</span>
+              </label>
+              <input
+                type="text"
+                name="nohp"
+                value={formData.nohp}
+                onChange={handleChange}
+                placeholder="Masukan Nomor Handphone"
+                required
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:focus:border-primary"
+              />
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black">
+                Mitra <span className="text-meta-1">*</span>
+              </label>
+              <input
+                type="text"
+                name="mitra"
+                value={formData.mitra}
+                onChange={handleChange}
+                placeholder="Masukan Mitra"
                 required
                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:focus:border-primary"
               />

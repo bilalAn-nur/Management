@@ -1,18 +1,28 @@
 const mongoose = require("mongoose");
 
 const promanSchema = new mongoose.Schema({
-  date: { type: String, required: true },
-  promanCategory: { type: String, required: true },
-  odpData: [
+  date: { type: String, required: true }, // Tanggal pencatatan
+  promanData: [
     {
-      odpName: { type: String, required: true },
+      promanName: { type: String, required: true }, // Nama Proman (misal ODP-CJA-FDB/068)
+      promanCategory: { type: String, required: true }, // Kategori Proman (regular, hvc, dll.)
       status: { type: String, required: true },
-      petugas: [{ type: String, required: true }],
+      petugas: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Pegawai", // Referensi ke model Pegawai
+          required: true,
+        },
+      ],
     },
   ],
-  inputBy: { type: String, required: true },
+  inputBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", // Referensi ke model User untuk mencatat siapa yang menginput
+    required: true,
+  },
 });
 
-const ODP = mongoose.model("Proman", promanSchema);
+const Proman = mongoose.model("Proman", promanSchema);
 
-module.exports = ODP;
+module.exports = Proman;

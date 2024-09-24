@@ -127,7 +127,7 @@ const ApproveUser = () => {
                       onChange={(e) =>
                         handleRoleChange(user._id, e.target.value)
                       }
-                      className="p-2 border border-gray-300 rounded-md"
+                      className=" rounded-md p-2 border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter"
                     >
                       <option value="admin">Admin</option>
                       <option value="user">User</option>
@@ -139,7 +139,7 @@ const ApproveUser = () => {
                       onChange={(e) =>
                         handleStatusChange(user._id, e.target.value)
                       }
-                      className="p-2 border border-gray-300 rounded-md"
+                      className=" rounded-md p-2 border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter"
                     >
                       <option value="true">Active</option>
                       <option value="false">Inactive</option>

@@ -62,7 +62,6 @@ exports.signUp = async (req, res) => {
       .json({ message: "Terjadi kesalahan saat membuat pengguna" });
   }
 };
-
 exports.signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -97,7 +96,7 @@ exports.signIn = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, name: user.name, email: user.email, role: user.role },
       process.env.JWT_SECRET || "supersecretkey",
-      { expiresIn: "1h" }
+      { expiresIn: "2h" }
     );
 
     await User.updateOne({ email: email }, { $set: { token: token } });
@@ -179,6 +178,7 @@ exports.fetchDataUser = async (req, res) => {
     return res.status(200).json({
       message: "User data fetched successfully",
       user: {
+        id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
