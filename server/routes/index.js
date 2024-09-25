@@ -25,6 +25,11 @@ const {
   editProman,
   deleteProman,
 } = require("../controllers/PromanController");
+const {
+  AddJadwalPegawai,
+  getJadwalPegawai,
+  deleteJadwalPegawai,
+} = require("../controllers/JadwalPegawaiController");
 
 // User Route
 router.post("/signup", signUp);
@@ -80,6 +85,17 @@ router.post("/editProman", authMiddleware, editProman, (req, res) => {
   res.status(200).json({ message: "izin diberikan!" });
 });
 router.post("/deleteProman", authMiddleware, deleteProman, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+
+// Router Jadwal Pegawai
+router.post("/addJadwalPegawai", AddJadwalPegawai, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+router.get("/getJadwalPegawai", getJadwalPegawai, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+router.post("/deleteJadwalPegawai", deleteJadwalPegawai, (req, res) => {
   res.status(200).json({ message: "izin diberikan!" });
 });
 

@@ -14,7 +14,19 @@ const CalendarProman = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pegawai, setPegawai] = useState([]);
   const [counts, setCounts] = useState({});
+  const [totalClose, setTotalClose] = useState([]);
   const [totals, setTotals] = useState({
+    regular: 0,
+    hvc: 0,
+    sqm: 0,
+    monet: 0,
+    unspec: 0,
+    lapsung: 0,
+    infracare: 0,
+    tangible: 0,
+    valins: 0,
+  });
+  const [totalClosed, setTotalClosed] = useState({
     regular: 0,
     hvc: 0,
     sqm: 0,
@@ -117,9 +129,14 @@ const CalendarProman = () => {
       infracare: 0,
       tangible: 0,
       valins: 0,
+      closed: 0,
     };
 
     const filteredProman = filterPromanByMonth(promanData, month, year);
+
+    totals.closed = filteredProman.reduce((total, proman) => {
+      return proman.status === "Close" ? total + 1 : total;
+    }, 0);
 
     filteredProman.forEach((proman) => {
       proman.promanData.forEach((entry) => {
@@ -153,6 +170,69 @@ const CalendarProman = () => {
     return counts;
   };
 
+  const calculateTotalClose = () => {
+    const counts = {};
+    const closed = {
+      regular: 0,
+      hvc: 0,
+      sqm: 0,
+      monet: 0,
+      unspec: 0,
+      lapsung: 0,
+      infracare: 0,
+      tangible: 0,
+      valins: 0,
+      totalClosed: 0, // Tambahkan properti total closed
+    };
+
+    const filteredProman = filterPromanByMonth(promanData, month, year);
+
+    filteredProman.forEach((proman) => {
+      proman.promanData.forEach((entry) => {
+        const category = entry.promanCategory.toLowerCase();
+
+        // Hitung jumlah close per kategori
+        if (
+          entry.status.toLowerCase() === "close" &&
+          closed[category] !== undefined
+        ) {
+          closed[category] += 1; // Tambahkan jumlah close untuk kategori
+          closed.totalClosed += 1; // Tambahkan ke total closed
+        }
+
+        // Hitung total jumlah untuk setiap kategori
+        if (counts[category] === undefined) {
+          counts[category] = 0;
+        }
+        counts[category] += 1; // Hitung total setiap kategori
+
+        // Hitung jumlah per pegawai dalam kategori
+        entry.petugas.forEach((pegawai) => {
+          const pegawaiName = pegawai.name.toLowerCase();
+          if (!counts[pegawaiName]) {
+            counts[pegawaiName] = {
+              regular: 0,
+              hvc: 0,
+              sqm: 0,
+              monet: 0,
+              unspec: 0,
+              lapsung: 0,
+              infracare: 0,
+              tangible: 0,
+              valins: 0,
+            };
+          }
+          if (counts[pegawaiName][category] !== undefined) {
+            counts[pegawaiName][category] += 1; // Tambahkan jumlah pegawai per kategori
+          }
+        });
+      });
+    });
+
+    setTotalClosed(closed); // Simpan hasil closed
+    return counts; // Kembalikan counts untuk setiap pegawai
+  };
+
   const fetchPegawai = async () => {
     try {
       const data = await getAllPegawai();
@@ -174,10 +254,12 @@ const CalendarProman = () => {
   useEffect(() => {
     fetchPegawai();
     fetchPromanData();
+    console.log(totalClosed);
   }, [month, year]);
 
   useEffect(() => {
     setCounts(calculatePromanCounts());
+    setTotalClose(calculateTotalClose());
   }, [promanData, month, year]);
 
   return (
@@ -323,6 +405,39 @@ const CalendarProman = () => {
                   </td>
                   <td className="border-t border-gray-300  text-center py-4 px-4">
                     {totals.valins}
+                  </td>
+                </tr>
+                <hr className="size-full" />
+                <tr className="bg-gray-100 font-bold text-black">
+                  <td className="border-t border-gray-300 py-4 px-4 pl-9">
+                    Total Close
+                  </td>
+                  <td className="border-t border-gray-300 text-center py-4 px-4">
+                    {totalClosed.regular}
+                  </td>
+                  <td className="border-t border-gray-300 text-center py-4 px-4">
+                    {totalClosed.hvc}
+                  </td>
+                  <td className="border-t border-gray-300 text-center py-4 px-4">
+                    {totalClosed.sqm}
+                  </td>
+                  <td className="border-t border-gray-300 text-center py-4 px-4">
+                    {totalClosed.monet}
+                  </td>
+                  <td className="border-t border-gray-300 text-center py-4 px-4">
+                    {totalClosed.unspec}
+                  </td>
+                  <td className="border-t border-gray-300 text-center py-4 px-4">
+                    {totalClosed.lapsung}
+                  </td>
+                  <td className="border-t border-gray-300 text-center py-4 px-4">
+                    {totalClosed.infracare}
+                  </td>
+                  <td className="border-t border-gray-300 text-center py-4 px-4">
+                    {totalClosed.tangible}
+                  </td>
+                  <td className="border-t border-gray-300  text-center py-4 px-4">
+                    {totalClosed.valins}
                   </td>
                 </tr>
               </tfoot>
