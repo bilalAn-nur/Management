@@ -17,22 +17,8 @@ const CalendarProman = () => {
   const [pegawai, setPegawai] = useState([]);
   const [counts, setCounts] = useState({});
   const [totalClose, setTotalClose] = useState([]);
-<<<<<<< HEAD
   const [jadwalPegawai, setJadwalPegawai] = useState([]);
-=======
->>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
   const [totals, setTotals] = useState({
-    regular: 0,
-    hvc: 0,
-    sqm: 0,
-    monet: 0,
-    unspec: 0,
-    lapsung: 0,
-    infracare: 0,
-    tangible: 0,
-    valins: 0,
-  });
-  const [totalClosed, setTotalClosed] = useState({
     regular: 0,
     hvc: 0,
     sqm: 0,
@@ -741,11 +727,7 @@ const CalendarProman = () => {
   useEffect(() => {
     fetchPegawai();
     fetchPromanData();
-<<<<<<< HEAD
     fetchJadwalData(month, year);
-=======
-    console.log(totalClosed);
->>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
   }, [month, year]);
 
   useEffect(() => {
