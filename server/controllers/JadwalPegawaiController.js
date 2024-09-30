@@ -9,14 +9,6 @@ exports.AddJadwalPegawai = async (req, res) => {
       return res.status(400).json({ message: "Data tidak lengkap" });
     }
 
-<<<<<<< HEAD
-=======
-    // Validasi schedule harus mengandung pagi, piket, libur
-    // if (!schedule[0].pagi || !schedule[0].piket || !schedule[0].libur) {
-    //   return res.status(400).json({ message: "Data schedule tidak lengkap" });
-    // }
-
->>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
     const newJadwal = new JadwalPegawai({
       date,
       month,
