@@ -96,7 +96,7 @@ exports.signIn = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, name: user.name, email: user.email, role: user.role },
       process.env.JWT_SECRET || "supersecretkey",
-      { expiresIn: "2h" }
+      { expiresIn: "6h" }
     );
 
     await User.updateOne({ email: email }, { $set: { token: token } });
@@ -149,6 +149,69 @@ exports.signOut = async (req, res) => {
   } catch (error) {
     console.error("Error during logout:", error);
     return res.status(500).json({ message: "Error during logout" });
+  }
+};
+exports.changePassword = async (req, res) => {
+  try {
+    const userId = req.body.id;
+    const { passwordBefore, passwordAfter, rePasswordAfter } = req.body;
+
+    // Pengecekan apakah password lama diisi
+    if (!passwordBefore) {
+      return res.status(400).json({ message: "Silahkan isi password lama!" });
+    }
+
+    // Pengecekan apakah password baru dan konfirmasinya diisi
+    if (!passwordAfter || !rePasswordAfter) {
+      return res.status(400).json({
+        message: "Silahkan isi password baru dan konfirmasi password!",
+      });
+    }
+
+    // Pengecekan apakah password baru dan konfirmasinya cocok
+    if (passwordAfter !== rePasswordAfter) {
+      return res
+        .status(400)
+        .json({ message: "Password dan Konfirmasi Password tidak sama!" });
+    }
+
+    // Mendapatkan user berdasarkan ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User tidak ditemukan!" });
+    }
+
+    // Verifikasi apakah password lama benar
+    const isMatch = await bcrypt.compare(passwordBefore, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Password lama salah!" });
+    }
+
+    // Hash password baru
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(passwordAfter, salt);
+
+    const changePassword = await User.findByIdAndUpdate(
+      userId,
+      { password: hashPassword },
+      { new: true }
+    );
+
+    if (!changePassword) {
+      return res.status(404).json({ message: "User tidak ditemukan!" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Password berhasil diubah!",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Gagal mengubah password",
+      error: error.message,
+    });
   }
 };
 

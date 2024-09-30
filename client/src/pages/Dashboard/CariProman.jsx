@@ -45,7 +45,12 @@ const CariProman = () => {
     const filtered = promanData.filter((item) => {
       const name = item.promanData[0]?.promanName?.toLowerCase() || "";
       const category = item.promanData[0]?.promanCategory?.toLowerCase() || "";
-      return name.includes(query) || category.includes(query);
+      const status = item.promanData[0]?.status?.toLowerCase() || "";
+      return (
+        name.includes(query) ||
+        category.includes(query) ||
+        status.includes(query)
+      );
     });
 
     setFilteredData(filtered); // Update filteredData state
@@ -121,7 +126,7 @@ const CariProman = () => {
             <div className="grid grid-cols-6 rounded-sm bg-gray-2">
               <div className="p-2.5 xl:p-5">
                 <h5 className="text-sm font-medium uppercase xsm:text-base">
-                  No
+                  Tanggal
                 </h5>
               </div>
               <div className="p-2.5 text-center xl:p-5">
@@ -163,7 +168,7 @@ const CariProman = () => {
                   key={item._id}
                 >
                   <div className="p-2.5 xl:p-5">
-                    <p className="text-black">{index + 1}</p>
+                    <p className="text-black">{item.date}</p>
                   </div>
                   <div className="p-2.5 xl:p-5">
                     <p className="text-black">

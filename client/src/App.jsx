@@ -12,6 +12,7 @@ import CalendarProman from "./pages/Dashboard/CalendarProman";
 import CariProman from "./pages/Dashboard/CariProman";
 import ExportProman from "./pages/Dashboard/ExportProman";
 import JadwalPegawai from "./pages/Dashboard/JadwalPegawai";
+import ChangePassword from "./pages/Dashboard/ChangePassword";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
         path="/dashboard"
         element={
           <AdminLayout>
-            <PageTittle title="Dashboard | TailAdmin" />
+            <PageTittle title="Dashboard | TelkomCijaura 1" />
           </AdminLayout>
         }
       />
@@ -29,7 +30,7 @@ function App() {
         path="/cariProman"
         element={
           <AdminLayout>
-            <PageTittle title="Cari Proman | TailAdmin" />
+            <PageTittle title="Cari Proman | TelkomCijaura 1" />
             <CariProman />
           </AdminLayout>
         }
@@ -38,7 +39,7 @@ function App() {
         path="/proman"
         element={
           <AdminLayout>
-            <PageTittle title="Proman | TailAdmin" />
+            <PageTittle title="Proman | TelkomCijaura 1" />
             <Proman />
           </AdminLayout>
         }
@@ -47,18 +48,8 @@ function App() {
         path="/calendar"
         element={
           <AdminLayout>
-            <PageTittle title="Calendar | TailAdmin" />
+            <PageTittle title="Calendar | TelkomCijaura 1" />
             <CalendarProman />
-          </AdminLayout>
-        }
-      />
-
-      <Route
-        path="/promanExport"
-        element={
-          <AdminLayout>
-            <PageTittle tittle="Export Proman | TailAdmin" />
-            <ExportProman />
           </AdminLayout>
         }
       />
@@ -67,8 +58,17 @@ function App() {
         path="/pegawai"
         element={
           <AdminLayout>
-            <PageTittle title="Pegawai | TailAdmin" />
+            <PageTittle title="Pegawai | TelkomCijaura 1" />
             <Pegawai />
+          </AdminLayout>
+        }
+      />
+      <Route
+        path="/change-password"
+        element={
+          <AdminLayout>
+            <PageTittle title="Change Password | TelkomCijaura 1" />
+            <ChangePassword />
           </AdminLayout>
         }
       />
@@ -77,7 +77,7 @@ function App() {
         path="/approve-user"
         element={
           <AdminLayout>
-            <PageTittle title="Approve User | TailAdmin" />
+            <PageTittle title="Approve User | TelkomCijaura 1" />
             <AproveUser />
           </AdminLayout>
         }
@@ -87,7 +87,7 @@ function App() {
         path="/jadwalPegawai"
         element={
           <AdminLayout>
-            <PageTittle title="Jadwal Proman | TailAdmin" />
+            <PageTittle title="Jadwal Proman | TelkomCijaura 1" />
             <JadwalPegawai />
           </AdminLayout>
         }
@@ -107,7 +107,7 @@ function App() {
         path="/sign-up"
         element={
           <AuthLayout>
-            <PageTittle title="Sign Up | TailAdmin" />
+            <PageTittle title="Sign Up | TelkomCijaura 1" />
             <SignUp />
           </AuthLayout>
         }

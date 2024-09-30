@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import SidebarLinkGroup from "./SidebarLinkGroup";
-import Logo from "../../images/logo/logo.svg";
+import Logo from "../../images/logo/TelkomLogoLight.png";
 import { useUser } from "../../contexts/UserContext";
 
 const index = ({ sidebarOpen, setSidebarOpen }) => {
@@ -196,17 +196,6 @@ const index = ({ sidebarOpen, setSidebarOpen }) => {
                               }
                             >
                               Cari Proman
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/promanExport"
-                              className={({ isActive }) =>
-                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-                                (isActive && "!text-white")
-                              }
-                            >
-                              Export Proman
                             </NavLink>
                           </li>
                         </ul>

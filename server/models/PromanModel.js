@@ -4,8 +4,8 @@ const promanSchema = new mongoose.Schema({
   date: { type: String, required: true }, // Tanggal pencatatan
   promanData: [
     {
-      promanName: { type: String, required: true }, // Nama Proman (misal ODP-CJA-FDB/068)
-      promanCategory: { type: String, required: true }, // Kategori Proman (regular, hvc, dll.)
+      promanName: { type: String, required: true },
+      promanCategory: { type: String, required: true },
       status: { type: String, required: true },
       petugas: [
         {

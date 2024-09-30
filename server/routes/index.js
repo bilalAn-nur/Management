@@ -8,6 +8,7 @@ const {
   changeRole,
   changeApprove,
   deleteUser,
+  changePassword,
 } = require("../controllers/UserController");
 const router = express.Router();
 const { loginLimiter } = require("../middleware/rateLimiter");
@@ -25,6 +26,16 @@ const {
   editProman,
   deleteProman,
 } = require("../controllers/PromanController");
+const {
+  AddJadwalPegawai,
+  getJadwalPegawai,
+  deleteJadwalPegawai,
+} = require("../controllers/JadwalPegawaiController");
+const {
+  exportDataWithMultipleSheets,
+  exportKPI,
+  exportJadwalPegawai,
+} = require("../controllers/ExcelController");
 
 // User Route
 router.post("/signup", signUp);
@@ -51,9 +62,12 @@ router.post("/changeApproveUser", authMiddleware, changeApprove, (req, res) => {
 router.post("/deleteUser", authMiddleware, deleteUser, (req, res) => {
   res.status(200).json({ message: "Protected route accessed successfully!" });
 });
+router.post("/changePassword", changePassword, (req, res) => {
+  res.status(200).json({ message: "Protected route accessed successfully!" });
+});
 
 // Pegawai Route
-router.get("/getAllPegawai", authMiddleware, ReadPegawai, (req, res) => {
+router.get("/getAllPegawai", ReadPegawai, (req, res) => {
   res.status(200).json({ message: "izin diberikan!" });
 });
 router.post("/addPegawai", authMiddleware, AddPegawai, (req, res) => {
@@ -82,5 +96,21 @@ router.post("/editProman", authMiddleware, editProman, (req, res) => {
 router.post("/deleteProman", authMiddleware, deleteProman, (req, res) => {
   res.status(200).json({ message: "izin diberikan!" });
 });
+
+// Router Jadwal Pegawai
+router.post("/addJadwalPegawai", AddJadwalPegawai, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+router.get("/getJadwalPegawai", getJadwalPegawai, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+router.post("/deleteJadwalPegawai", deleteJadwalPegawai, (req, res) => {
+  res.status(200).json({ message: "izin diberikan!" });
+});
+
+// Router Export To Excel
+
+router.get("/exportExcel", exportKPI);
+router.get("/exportExcelJadwal", exportJadwalPegawai);
 
 module.exports = router;

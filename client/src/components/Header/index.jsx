@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import DropdownMessage from "./DropdownMessage";
-import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import LogoIcon from "../../images/logo/logo-icon.svg";
 
@@ -60,7 +58,7 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
         <div className="hidden sm:block">
           <form action="https://formbold.com/s/unique_form_id" method="POST">
             <div className="relative">
-              <button className="absolute left-0 top-1/2 -translate-y-1/2">
+              {/* <button className="absolute left-0 top-1/2 -translate-y-1/2">
                 <svg
                   className="fill-body hover:fill-primary dark:hover:fill-primary"
                   width="20"
@@ -82,27 +80,19 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
                     fill=""
                   />
                 </svg>
-              </button>
+              </button> */}
 
-              <input
+              {/* <input
                 type="text"
                 placeholder="Type to search..."
                 className="w-full bg-transparent pl-9 pr-4 text-black focus:outline-none  xl:w-125"
-              />
+              /> */}
             </div>
           </form>
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
-          <ul className="flex items-center gap-2 2xsm:gap-4">
-            {/* Notification Menu Area */}
-            <DropdownNotification />
-            {/* Notification Menu Area */}
-
-            {/* Chat Notification Area */}
-            <DropdownMessage />
-            {/* Chat Notification Area */}
-          </ul>
+          <ul className="flex items-center gap-2 2xsm:gap-4"></ul>
 
           {/* User Area */}
           <DropdownUser />
