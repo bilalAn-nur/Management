@@ -31,11 +31,14 @@ const {
   getJadwalPegawai,
   deleteJadwalPegawai,
 } = require("../controllers/JadwalPegawaiController");
+<<<<<<< HEAD
 const {
   exportDataWithMultipleSheets,
   exportKPI,
   exportJadwalPegawai,
 } = require("../controllers/ExcelController");
+=======
+>>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
 
 // User Route
 router.post("/signup", signUp);
@@ -108,9 +111,12 @@ router.post("/deleteJadwalPegawai", deleteJadwalPegawai, (req, res) => {
   res.status(200).json({ message: "izin diberikan!" });
 });
 
+<<<<<<< HEAD
 // Router Export To Excel
 
 router.get("/exportExcel", exportKPI);
 router.get("/exportExcelJadwal", exportJadwalPegawai);
 
+=======
+>>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
 module.exports = router;

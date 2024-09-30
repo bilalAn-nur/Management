@@ -4,6 +4,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { getAllPegawai } from "../../api/PegawaiAPI";
 import axios from "axios";
 
+<<<<<<< HEAD
 import ExcelJS from "exceljs";
 
 const JadwalPegawai = () => {
@@ -20,6 +21,9 @@ const JadwalPegawai = () => {
     return days[new Date(date).getDay()];
   };
 
+=======
+const JadwalPegawai = () => {
+>>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
   const getSchedulesForMonth = async (month, year) => {
     try {
       const response = await axios.get(
@@ -38,10 +42,13 @@ const JadwalPegawai = () => {
   const [year, setYear] = useState(today.getFullYear());
   const [selectedDate, setSelectedDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+<<<<<<< HEAD
 
   const [jadwalData, setJadwalData] = useState([]);
   const [pegawaiData, setPegawaiData] = useState([]);
 
+=======
+>>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
   const [employees, setEmployees] = useState([]);
   const [schedule, setSchedule] = useState({
     pagi: [],
@@ -77,6 +84,7 @@ const JadwalPegawai = () => {
       setSchedules(schedulesData.data || []);
     };
 
+<<<<<<< HEAD
     const fetchJadwalData = async (month, year) => {
       try {
         const jadwalResponse = await axios.get(
@@ -99,6 +107,8 @@ const JadwalPegawai = () => {
     fetchJadwalData(month + 1, year);
     // console.log(month, year);
 
+=======
+>>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
     fetchEmployees();
   }, [month, year]);
 
@@ -629,7 +639,11 @@ const JadwalPegawai = () => {
             {isScheduleExists ? (
               <div className="p-6 overflow-y-auto max-h-[70vh] ">
                 <h3 className="text-sm font-semibold  text-black">
+<<<<<<< HEAD
                   Jadwal Masuk:{" "}
+=======
+                  Jadwal Pagi:{" "}
+>>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
                 </h3>
                 {schedule.pagi.length > 0 ? (
                   schedule.pagi.map((empId, idx) => {
@@ -645,7 +659,11 @@ const JadwalPegawai = () => {
                   })
                 ) : (
                   <p className="text-black">
+<<<<<<< HEAD
                     Pegawai tidak ada pada jadwal Masuk.
+=======
+                    Pegawai tidak ada pada jadwal pagi.
+>>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
                   </p>
                 )}
 
@@ -728,7 +746,11 @@ const JadwalPegawai = () => {
         </div>
       )}
       <div>
+<<<<<<< HEAD
         <li className="text-green-600 ml-3">💼 : Jadwal Masuk</li>
+=======
+        <li className="text-green-600 ml-3">💼 : Jadwal Pagi</li>
+>>>>>>> e8c714178cae1d0de80a4d23f7fda2e67e4efbd3
         <li className="text-blue-600 ml-3">🌃 : Jadwal Piket</li>
         <li className="text-red-600 ml-3 mb-4">🏖️ : Jadwal Libur</li>
       </div>
