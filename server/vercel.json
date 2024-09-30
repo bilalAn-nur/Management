@@ -1,8 +1,5 @@
 {
-<<<<<<< HEAD
   "version": 2,
-=======
->>>>>>> 8efd3985a543d64837748ae9b62649ce22e04170
   "builds": [
     {
       "src": "/index.cjs",
@@ -12,12 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-<<<<<<< HEAD
       "dest": "/index.cjs"
-=======
-      "dest": "/index.js",
-      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
->>>>>>> 8efd3985a543d64837748ae9b62649ce22e04170
     }
   ]
 }

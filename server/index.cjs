@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 
 app.use(
   cors({
-    origin: "https://telkom1cijaura-servermanagement.vercel.app/",
+    origin: "https://telkom1cijaura-clientmanagement.vercel.app/",
     credentials: true,
   })
 );
